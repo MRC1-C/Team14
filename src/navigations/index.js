@@ -1,7 +1,10 @@
 import HomeImage from '../image/HomeImage.svg';
 import AccountImage from "../image/AccountImage.svg";
-import Accout from "../screens/Accout";
 import Home from "../screens/Home";
+import Auth from "../screens/Auth";
+import AuthPassword from "../screens/Auth/AuthPassword";
+
+
 
 export const tabs = [
   {
@@ -11,34 +14,22 @@ export const tabs = [
   },
   {
     name: "Accout",
-    component: Accout,
+    component: Auth,
     icon: AccountImage,
   }
 ];
 
 export const screens = [
-//   {
-//     name: "FashionSocial",
-//     component: FashionSocial,
-//   },
+  {
+    name: 'AuthPassword',
+    component: AuthPassword
+  },
 ];
 
 
-// export const screensTransparent = [
-//   {
-//     name: "ProductDetail",
-//     component: ProductDetail,
-//   },
-//   {
-//     name: 'Auth',
-//     component: Auth
-//   },
-//   {
-//     name: "SocialDetail",
-//     component: SocialDetail,
-//   },
-//   {
-//     name: 'EditImage',
-//     component: EditImage
-//   }
-// ]
+export const screensTransparent = [
+  // {
+  //   name: 'AuthPass',
+  //   component: Auth
+  // }
+]

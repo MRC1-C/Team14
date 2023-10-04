@@ -2,7 +2,7 @@ import { NativeBaseProvider } from "native-base";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { screens, tabs } from "./src/navigations";
+import { screens, tabs, screensTransparent } from "./src/navigations";
 import { Purplerose2 } from "./src/constants";
 import {
   useFonts,
@@ -12,24 +12,6 @@ import {
 import SvgUri from "react-native-svg-uri";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
-
-// const CartIcon = ({ navigation }) => {
-//   return (
-//     <View onTouchEnd={() => navigation.navigate("Cart")}>
-//       <AntDesign
-//         name="shoppingcart"
-//         size={22}
-//         color={Purplerose2}
-//         style={{ marginRight: 5 }}
-//       />
-//       <Badge
-//         value={2}
-//         containerStyle={{ position: "absolute", top: -6, right: -5 }}
-//         badgeStyle={{ backgroundColor: "red" }}
-//       />
-//     </View>
-//   );
-// };
 
 const TabMain = () => {
   return (

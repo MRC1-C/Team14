@@ -2,15 +2,21 @@ import {
   Image,
   Button,
 } from "native-base";
-import { View, Text, Dimensions } from "react-native";
+import { View, Text } from "react-native";
 import SvgUri from "react-native-svg-uri";
 import like from "../image/likeimage.svg";
 import comment from "../image/commentimage.svg";
 import share from "../image/shareimage.svg";
 import SliderImageComponents from "./SliderImageComponents";
 import { Padding } from "../constants";
+import ModelComponents from "./ModelComponents";
+import { useState } from "react";
 
 export default function PostComponents(props) {
+  const [isOpen, setIsOpen] = useState(false)
+  const onClose = ()=>{
+    setIsOpen(false)
+  }
   return (
     <View
       style={{ backgroundColor: "white", marginBottom: 10, paddingBottom: 10 }}
@@ -54,82 +60,30 @@ export default function PostComponents(props) {
             >
               artlynnnn
             </Text>
-            <View
-              style={{ display: "flex", flexDirection: "row", marginLeft: 2 }}
-            >
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginRight: 14,
-                }}
-              >
-                <SvgUri width={14} fill="#444444" source={like} />
-                <Text
+            <Text
                   style={{
                     color: "#444444",
-                    fontFamily: "Quicksand_500Medium",
-                    marginLeft: 6,
+                    fontFamily: "Quicksand_700Bold",
+                    fontSize: 12
                   }}
                 >
-                  1,5k
+                  Đăng 15p
                 </Text>
-              </View>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginRight: 14,
-                }}
-              >
-                <SvgUri width={14} fill="#444444" source={comment} />
-                <Text
-                  style={{
-                    color: "#444444",
-                    fontFamily: "Quicksand_500Medium",
-                    marginLeft: 6,
-                  }}
-                >
-                  1,5k
-                </Text>
-              </View>
-              <View
-                style={{
-                  display: "flex",
-                  flexDirection: "row",
-                  marginRight: 14,
-                }}
-              >
-                <SvgUri width={14} fill="#444444" source={share} />
-                <Text
-                  style={{
-                    color: "#444444",
-                    fontFamily: "Quicksand_500Medium",
-                    marginLeft: 6,
-                  }}
-                >
-                  1,5k
-                </Text>
-              </View>
-            </View>
           </View>
         </View>
         {/*    */}
       </View>
-      <View>
-        {props?.review && (
-          <Text
-            style={{
-              fontSize: 16,
-              fontFamily: "Quicksand_500Medium",
-              paddingLeft: Padding,
-              paddingRight: Padding,
-            }}
-          >
-            {props.review}
-          </Text>
-        )}
-      </View>
+        <Text
+          style={{
+            fontSize: 16,
+            fontFamily: "Quicksand_500Medium",
+            paddingLeft: Padding,
+            paddingRight: Padding,
+            paddingBottom: Padding,
+          }}
+        >
+          {props.content}
+        </Text>
       <View onTouchEnd={() => props.navigation.navigate("SocialDetail")}>
         <SliderImageComponents
           imgs={[
@@ -147,26 +101,6 @@ export default function PostComponents(props) {
             },
           ]}
         />
-        {/* <FlatList
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          data={[1, 2, 3, 4, 5, 6, 7, 8]}
-          renderItem={({ item, index }) => (
-            <Image
-              source={{
-                uri: "https://icdn.dantri.com.vn/thumb_w/770/2022/02/28/rose-2-1646032942820.png",
-              }}
-              key={index}
-              style={{
-                width: 300,
-                height: 190,
-                resizeMode: "cover",
-                margin: 8,
-                borderRadius: 8,
-              }}
-              alt="Alternate Text"
-            /> */}
-        {/* )} /> */}
       </View>
       <View>
         <View
@@ -200,7 +134,7 @@ export default function PostComponents(props) {
               </Text>
             </View>
           </Button>
-          <Button onPress={()=>console.log('first')} variant="ghost">
+          <Button onPress={()=>setIsOpen(true)} variant="ghost">
             <View
               style={{
                 display: "flex",
@@ -236,23 +170,14 @@ export default function PostComponents(props) {
                   marginLeft: 11,
                 }}
               >
-                1,5k
+                report
               </Text>
             </View>
           </Button>
         </View>
-        <Text
-          style={{
-            fontSize: 16,
-            fontFamily: "Quicksand_500Medium",
-            paddingLeft: Padding,
-            paddingRight: Padding,
-            paddingBottom: Padding,
-          }}
-        >
-          {props.content}
-        </Text>
+        
       </View>
+     <ModelComponents isOpen={isOpen} onClose={onClose}/>
     </View>
   );
 }

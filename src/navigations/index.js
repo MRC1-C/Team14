@@ -8,6 +8,7 @@ import Recharge from '../screens/Recharge';
 import Post from '../screens/Post';
 import Friends from '../screens/Friends';
 import Notification from '../screens/Notification';
+import BTVN from '../screens/BTVN';
 
 
 
@@ -30,6 +31,11 @@ export const tabs = [
   {
     name: "Account",
     component: Account,
+    icon: AccountImage,
+  },
+  {
+    name: "BTVN",
+    component: BTVN,
     icon: AccountImage,
   },
 ];

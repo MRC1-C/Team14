@@ -7,7 +7,11 @@ import {
 } from "../../constants";
 import AccountComponents from "./AccountComponents";
 import PostComponents from "../../components/PostComponents";
+import { useRoute } from '@react-navigation/native';
+
 export default function Account({ navigation }) {
+  const route = useRoute();
+  console.log(route.params?.user)
   return (
     <ScrollView>
       <View
@@ -18,7 +22,7 @@ export default function Account({ navigation }) {
           borderRadius: 10,
         }}
       >
-        <AccountComponents />
+        <AccountComponents user={route.params?.user} id={route.params?.id}/>
         <View
           style={{
             display: "flex",

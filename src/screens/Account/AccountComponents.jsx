@@ -6,15 +6,39 @@ import { Purplerose1, Purplerose2 } from "../../constants";
 import { useNavigation } from "@react-navigation/native";
 import { getRequest, GetStorage, getToken, RemoveStorage, SetStorage } from "../../hooks/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { db } from "../../../firebaseConfig";
+import {  doc, setDoc, getDoc ,serverTimestamp,onSnapshot,collection } from 'firebase/firestore';
 
-const AccountComponents = () => {
+
+const AccountComponents = (props) => {
   const navigation = useNavigation();
+  console.log('first', props.user)
   const [User, setUser] = useState(null)
   useEffect(() => {
-    AsyncStorage.getItem('accessToken')
-    .then(value => setUser(value))
-     
+      // AsyncStorage.getItem('accessToken')
+      // .then(value => setUser(value))
+      setUser(props.user)
   },[]);
+  useEffect(() => {
+    const sessionRef = collection(db, 'sessions');
+      const unsubscribe = onSnapshot(sessionRef, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.doc.id === 'logged_in') {
+          const loggedIn = change.doc.data().value;
+          console.log(props.user,   props.id, loggedIn)
+          if (!!props.user && props.id != loggedIn && loggedIn != 'no') {
+            alert('Có người đang đăng nhập từ máy khác.');
+          }
+        }
+      });
+    });
+  
+    return () => {
+      // Ngắt kết nối khi component unmount
+      unsubscribe();
+    };
+  }, []);
+  
   return (
     <View
       style={{
@@ -42,10 +66,10 @@ const AccountComponents = () => {
         >
           TS
         </Avatar>
-        {User!=null ? (
+        {props.user!=null ? (
           <View style={{ marginLeft: 10 }}>
             <Text style={{ fontSize: 20, fontFamily: "Quicksand_700Bold" }}>
-              {User}
+              {props.user}
             </Text>
             <Text
               style={{
@@ -54,7 +78,7 @@ const AccountComponents = () => {
                 color: Purplerose1,
               }}
             >
-              thanh vien blackpink
+              thanh vien
             </Text>
           </View>
         ) : (
@@ -79,13 +103,15 @@ const AccountComponents = () => {
           </View>
         )}
       </View>
-      {User && (
+      {props.user && (
         <Button
           variant={"ghost"}
           onPress={async () => {
             setUser(null)
             navigation.navigate('Auth') 
             await RemoveStorage();
+            const sessionRef = doc(db, 'sessions', 'logged_in');
+            await setDoc(sessionRef, { value: "no", timestamp: serverTimestamp() });
           }}
         >
           <AntDesign name="logout" size={24} color={Purplerose2} />

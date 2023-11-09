@@ -1,10 +1,15 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { Button, Icon, Input, Pressable } from "native-base";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Text, View } from "react-native";
 import { Padding, Purplerose1 } from "../../constants";
-import { GetStorage, SetStorage } from "../../hooks/api";
+import { SetStorage } from "../../hooks/api";
+import {  doc, getDoc, setDoc,serverTimestamp } from 'firebase/firestore';
+import { db } from "../../../firebaseConfig";
+import uuid from 'react-native-uuid';
+
+
 export default function AuthPassword({ route }) {
   const navigation = useNavigation()
   const { accout } = route.params;
@@ -12,13 +17,27 @@ export default function AuthPassword({ route }) {
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
   const handleLogin =  async() => {
-    // await GetStorage()
-    await SetStorage(accout);
-    await GetStorage()
-    setTimeout(()=>{
-      navigation.navigate('Account')
-    },500)
+    // await SetStorage(accout);
+    const sessionRef = doc(db, 'sessions', 'logged_in');
+    getDoc(sessionRef)
+    .then((docSnapshot) => {
+      const loggedIn = docSnapshot.data()?.value;
+      
+      if (loggedIn != "no") {
+        alert('Đang có ngườI đăng nhập');
+      }
+      else{
+        const _id = "1"+ uuid.v4().toString()
+        navigation.navigate('Account', {"user": accout, "id": _id.toString()})
+        setDoc(sessionRef, { value: _id.toString(), timestamp: serverTimestamp()});
+      }
+    })
+    .catch((error) => {
+      console.error('Lỗi khi lấy dữ liệu:', error);
+    });
   };
+
+
   return (
     <View
       style={{ padding: Padding, backgroundColor: "white", height: "100%" }}

@@ -9,7 +9,14 @@ import {
   Quicksand_700Bold,
   Quicksand_500Medium,
 } from "@expo-google-fonts/quicksand";
+import { useEffect } from "react";
 import SvgUri from "react-native-svg-uri";
+import { db } from "./firebaseConfig";
+import { onSnapshot,collection,setLogLevel } from 'firebase/firestore';
+import { Text } from "native-base";
+
+// setLogLevel('debug');
+
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -49,6 +56,7 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
+  
 
   return (
     <NativeBaseProvider>

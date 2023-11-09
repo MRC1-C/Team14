@@ -8,6 +8,7 @@ import { SetStorage } from "../../hooks/api";
 import {  doc, getDoc, setDoc,serverTimestamp } from 'firebase/firestore';
 import { db } from "../../../firebaseConfig";
 import uuid from 'react-native-uuid';
+import useStore from "../../store";
 
 
 export default function AuthPassword({ route }) {
@@ -16,6 +17,9 @@ export default function AuthPassword({ route }) {
   const [password, setPassword] = useState();
   const [show, setShow] = useState(false);
   const [isLoading, setIsLoading] = useState(false)
+  const setUser = useStore(state => state.setUser);
+  const setID = useStore(state => state.setID);
+
   const handleLogin =  async() => {
     // await SetStorage(accout);
     const sessionRef = doc(db, 'sessions', 'logged_in');
@@ -24,12 +28,18 @@ export default function AuthPassword({ route }) {
       const loggedIn = docSnapshot.data()?.value;
       
       if (loggedIn != "no") {
-        alert('Đang có ngườI đăng nhập');
+        alert('Đang có người đăng nhập');
+        const sessionRefcheck = doc(db, 'sessions', 'check');
+        setDoc(sessionRefcheck, { value: false });
       }
       else{
         const _id = "1"+ uuid.v4().toString()
+        setUser(accout)
         navigation.navigate('Account', {"user": accout, "id": _id.toString()})
         setDoc(sessionRef, { value: _id.toString(), timestamp: serverTimestamp()});
+        
+        const sessionRefcheck = doc(db, 'sessions', 'check');
+        setDoc(sessionRefcheck, { value: 'no'});
       }
     })
     .catch((error) => {

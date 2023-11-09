@@ -8,37 +8,20 @@ import { getRequest, GetStorage, getToken, RemoveStorage, SetStorage } from "../
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { db } from "../../../firebaseConfig";
 import {  doc, setDoc, getDoc ,serverTimestamp,onSnapshot,collection } from 'firebase/firestore';
+import useStore from "../../store";
 
 
 const AccountComponents = (props) => {
   const navigation = useNavigation();
   console.log('first', props.user)
-  const [User, setUser] = useState(null)
+  // const [User, setUser] = useState(null)
+  const setUser = useStore(state => state.setUser)
   useEffect(() => {
       // AsyncStorage.getItem('accessToken')
       // .then(value => setUser(value))
       setUser(props.user)
   },[]);
-  useEffect(() => {
-    const sessionRef = collection(db, 'sessions');
-      const unsubscribe = onSnapshot(sessionRef, (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.doc.id === 'logged_in') {
-          const loggedIn = change.doc.data().value;
-          console.log(props.user,   props.id, loggedIn)
-          if (!!props.user && props.id != loggedIn && loggedIn != 'no') {
-            alert('Có người đang đăng nhập từ máy khác.');
-          }
-        }
-      });
-    });
-  
-    return () => {
-      // Ngắt kết nối khi component unmount
-      unsubscribe();
-    };
-  }, []);
-  
+
   return (
     <View
       style={{

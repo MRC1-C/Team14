@@ -13,7 +13,8 @@ import { useEffect } from "react";
 import SvgUri from "react-native-svg-uri";
 import { db } from "./firebaseConfig";
 import { onSnapshot,collection,setLogLevel } from 'firebase/firestore';
-import { Text } from "native-base";
+import useStore from "./src/store";
+
 
 // setLogLevel('debug');
 
@@ -21,6 +22,27 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 const TabMain = () => {
+  const user = useStore(state => state.user)
+
+  useEffect(() => {
+    const sessionRef = collection(db, 'sessions');
+      const unsubscribe = onSnapshot(sessionRef, (snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.doc.id === 'check') {
+          console.log(change.doc.data()?.value)
+          if(user && change.doc.data()?.value != 'no'){
+            alert('Có người đang đăng nhập từ máy khác.');
+          }
+        }
+      });
+    });
+    return () => {
+      unsubscribe();
+    };
+  
+  }, [user]);
+  
+  
   return (
     <Tab.Navigator
       screenOptions={{
@@ -96,5 +118,6 @@ export default function App() {
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>
+
   );
 }

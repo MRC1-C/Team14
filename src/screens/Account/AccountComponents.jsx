@@ -1,26 +1,39 @@
 import React, { useEffect, useState } from "react";
 import { AntDesign } from "@expo/vector-icons";
 import { Avatar, Button } from "native-base";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View, Image } from "react-native";
 import { Purplerose1, Purplerose2 } from "../../constants";
 import { useNavigation } from "@react-navigation/native";
-import { getRequest, GetStorage, getToken, RemoveStorage, SetStorage } from "../../hooks/api";
+import {
+  getRequest,
+  GetStorage,
+  getToken,
+  RemoveStorage,
+  SetStorage,
+} from "../../hooks/api";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { db } from "../../../firebaseConfig";
-import {  doc, setDoc, getDoc ,serverTimestamp,onSnapshot,collection } from 'firebase/firestore';
+import {
+  doc,
+  setDoc,
+  getDoc,
+  serverTimestamp,
+  onSnapshot,
+  collection,
+} from "firebase/firestore";
 import useStore from "../../store";
-
+import imageSetting from "../../image/setting.png";
 
 const AccountComponents = (props) => {
   const navigation = useNavigation();
-  console.log('first', props.user)
+  console.log("first", props.user);
   // const [User, setUser] = useState(null)
-  const setUser = useStore(state => state.setUser)
+  const setUser = useStore((state) => state.setUser);
   useEffect(() => {
-      // AsyncStorage.getItem('accessToken')
-      // .then(value => setUser(value))
-      setUser(props.user)
-  },[]);
+    // AsyncStorage.getItem('accessToken')
+    // .then(value => setUser(value))
+    setUser(props.user);
+  }, []);
 
   return (
     <View
@@ -49,7 +62,7 @@ const AccountComponents = (props) => {
         >
           TS
         </Avatar>
-        {props.user!=null ? (
+        {props.user != null ? (
           <View style={{ marginLeft: 10 }}>
             <Text style={{ fontSize: 20, fontFamily: "Quicksand_700Bold" }}>
               {props.user}
@@ -66,20 +79,26 @@ const AccountComponents = (props) => {
           </View>
         ) : (
           <View style={{ marginLeft: 10 }}>
-            <Text
-              style={{
-                fontSize: 14,
-                paddingBottom: 10,
-                fontFamily: "Quicksand_700Bold",
-              }}
-            >
-              Chao mung den voi FB
-            </Text>
+            <View style={{ flexDirection: "row" }}>
+              <Text
+                style={{
+                  fontSize: 14,
+                  paddingBottom: 10,
+                  fontFamily: "Quicksand_700Bold",
+                }}
+              >
+                Chao mung den voi FB
+              </Text>
+              <TouchableOpacity onPress={() => navigation.navigate("Setting")}>
+                <Image source={imageSetting} style={{ marginLeft: 70 }} />
+              </TouchableOpacity>
+            </View>
             <Button
               variant="outline"
               borderColor={Purplerose2}
               _text={{ color: Purplerose2 }}
               onPress={() => navigation.navigate("Auth")}
+              style={{ width: 170 }}
             >
               Đăng nhập/Đăng ký
             </Button>
@@ -90,11 +109,14 @@ const AccountComponents = (props) => {
         <Button
           variant={"ghost"}
           onPress={async () => {
-            setUser(null)
-            navigation.navigate('Auth') 
+            setUser(null);
+            navigation.navigate("Auth");
             await RemoveStorage();
-            const sessionRef = doc(db, 'sessions', 'logged_in');
-            await setDoc(sessionRef, { value: "no", timestamp: serverTimestamp() });
+            const sessionRef = doc(db, "sessions", "logged_in");
+            await setDoc(sessionRef, {
+              value: "no",
+              timestamp: serverTimestamp(),
+            });
           }}
         >
           <AntDesign name="logout" size={24} color={Purplerose2} />

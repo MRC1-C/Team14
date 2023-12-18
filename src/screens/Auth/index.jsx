@@ -1,20 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Button, Icon, Input, Pressable, Image, View, Text, ScrollView, KeyboardAvoidingView } from "native-base";
+import {
+  Button,
+  Icon,
+  Input,
+  Pressable,
+  Image,
+  View,
+  Text,
+  ScrollView,
+  KeyboardAvoidingView,
+} from "native-base";
 import { Padding, Purplerose1 } from "../../constants";
 import { MaterialIcons } from "@expo/vector-icons";
-
+import { SetStorage, postRequest, postRequestJson } from "../../hooks/api";
 
 export default function Auth({ navigation }) {
   const [isNumber, setIsNumber] = useState(true);
-  const [accout, setaccout] = useState()
+  const [accout, setaccout] = useState();
   const [password, setPassword] = useState();
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [isSignUp, setIsSignUp] = useState(false)
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [isSignUp, setIsSignUp] = useState(false);
   const [show, setShow] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 
   const type = {
     number: {
@@ -30,6 +39,9 @@ export default function Auth({ navigation }) {
       bottomTitle: "Dang nhap bang SDT",
     },
   };
+
+  const handleSubmit = () => {};
+
   return (
     <ScrollView>
       <Image
@@ -48,87 +60,118 @@ export default function Auth({ navigation }) {
         <Text style={{ fontFamily: "Quicksand_500Medium" }}>
           {type[isNumber ? "number" : "gmail"].title}
         </Text>
-        {error ? <Text style={{ color: 'red', marginTop: 10,fontFamily: "Quicksand_500Medium" }}>{error}</Text> : null}
+        {error ? (
+          <Text
+            style={{
+              color: "red",
+              marginTop: 10,
+              fontFamily: "Quicksand_500Medium",
+            }}
+          >
+            {error}
+          </Text>
+        ) : null}
         <KeyboardAvoidingView
           style={{ flex: 1 }}
-          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
         >
-        <Input
-          placeholder={type[isNumber ? "number" : "gmail"].placeholder}
-          variant="underlined"
-          marginTop={5}
-          marginBottom={5}
-          size="lg"
-          keyboardType={type[isNumber ? "number" : "gmail"].type}
-          fontFamily="Quicksand_500Medium"
-          value={accout}
-          onChangeText={value => setaccout(value)}
-        />
-        <Input
-          variant="underlined"
-          marginBottom={5}
-          placeholder="Mật khẩu"
-          marginTop={5}
-          size="lg"
-          value={password}
-          onChangeText={(value) => setPassword(value)}
-          type={show ? "text" : "password"}
-          InputRightElement={
-            <Pressable onPress={() => setShow(!show)}>
-              <Icon
-                as={
-                  <MaterialIcons name={show ? "visibility" : "visibility-off"} />
-                }
-                size={5}
-                mr="2"
-                color="muted.400"
-              />
-            </Pressable>
-          }
-        />
-        {
-          isSignUp &&
-        <Input
-          variant="underlined"
-          marginBottom={5}
-          placeholder="Xác nhận mật khẩu"
-          marginTop={5}
-          size="lg"
-          value={confirmPassword}
-          onChangeText={(value) => setConfirmPassword(value)}
-          type={showConfirm ? "text" : "password"}
-          InputRightElement={
-            <Pressable onPress={() => setShowConfirm(!showConfirm)}>
-              <Icon
-                as={
-                  <MaterialIcons name={showConfirm ? "visibility" : "visibility-off"} />
-                }
-                size={5}
-                mr="2"
-                color="muted.400"
-              />
-            </Pressable>
-          }
-        />
-        }
-
+          <Input
+            placeholder={type[isNumber ? "number" : "gmail"].placeholder}
+            variant="underlined"
+            marginTop={5}
+            marginBottom={5}
+            size="lg"
+            keyboardType={type[isNumber ? "number" : "gmail"].type}
+            fontFamily="Quicksand_500Medium"
+            value={accout}
+            onChangeText={(value) => setaccout(value)}
+          />
+          <Input
+            variant="underlined"
+            marginBottom={5}
+            placeholder="Mật khẩu"
+            marginTop={5}
+            size="lg"
+            value={password}
+            onChangeText={(value) => setPassword(value)}
+            type={show ? "text" : "password"}
+            InputRightElement={
+              <Pressable onPress={() => setShow(!show)}>
+                <Icon
+                  as={
+                    <MaterialIcons
+                      name={show ? "visibility" : "visibility-off"}
+                    />
+                  }
+                  size={5}
+                  mr="2"
+                  color="muted.400"
+                />
+              </Pressable>
+            }
+          />
+          {isSignUp && (
+            <Input
+              variant="underlined"
+              marginBottom={5}
+              placeholder="Xác nhận mật khẩu"
+              marginTop={5}
+              size="lg"
+              value={confirmPassword}
+              onChangeText={(value) => setConfirmPassword(value)}
+              type={showConfirm ? "text" : "password"}
+              InputRightElement={
+                <Pressable onPress={() => setShowConfirm(!showConfirm)}>
+                  <Icon
+                    as={
+                      <MaterialIcons
+                        name={showConfirm ? "visibility" : "visibility-off"}
+                      />
+                    }
+                    size={5}
+                    mr="2"
+                    color="muted.400"
+                  />
+                </Pressable>
+              }
+            />
+          )}
         </KeyboardAvoidingView>
         <Button
           backgroundColor={Purplerose1}
           onPress={() => {
             if (!emailRegex.test(accout) && !isNumber) {
-              setError('Địa chỉ email không hợp lệ');
+              setError("Địa chỉ email không hợp lệ");
               return;
             }
-        
+
             // Kiểm tra xác nhận mật khẩu
             if (password !== confirmPassword && isSignUp) {
-              setError('Mật khẩu không khớp');
+              setError("Mật khẩu không khớp");
               return;
             }
-            navigation.navigate("AuthPassword", { "accout": accout })
-          }
-          }
+            if (isSignUp) {
+              postRequestJson("/signup", {
+                email: accout,
+                password: password,
+                uuid: accout.toString(),
+              }).then((data) => console.log(data));
+            } else {
+              console.log({
+                email: accout,
+                password: password.toString(),
+                uuid: accout.toString(),
+              });
+              postRequestJson("/login", {
+                email: accout,
+                password: password,
+                uuid: accout.toString(),
+              }).then((data) => {
+                navigation.navigate('Home')
+                SetStorage(data.data.token);
+              });
+            }
+          }}
         >
           Tiep tuc
         </Button>

@@ -10,7 +10,6 @@ import Friends from '../screens/Friends';
 import Notification from '../screens/Notification';
 import BTVN from '../screens/BTVN';
 import Setting from '../screens/Setting';
-
 export const tabs = [
   {
     name: "Home",

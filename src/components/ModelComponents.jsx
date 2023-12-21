@@ -5,6 +5,9 @@ import {
   Button,
   Avatar,
   Input,
+  Center,
+  VStack,
+  Skeleton,
 } from "native-base";
 import {
   Platform,
@@ -28,6 +31,9 @@ const ModelComponents = (props) => {
   const subscriptions = useRef([]);
   const [data, setData] = useState([])
   const idComment = useStore(state => state.idComment)
+  const isModel = useStore(state => state.isModel)
+  const setIsModel = useStore(state => state.setIsModel)
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     function onKeyboardChange(e) {
@@ -64,19 +70,21 @@ const ModelComponents = (props) => {
   }, [Animated, subscriptions]);
 
   useEffect(() => {
+    setLoading(true)
     postRequestJson('/get_mark_comment', {
       "id": idComment,
       "index": "0",
       "count": "100"
     })
       .then(dt => {
+        setLoading(false)
         console.log(dt.data.length)
         setData(dt.data)
       }
       )
   }, [idComment])
   return (
-    <Actionsheet isOpen={props.isOpen} onClose={() => props.onClose()}>
+    <Actionsheet isOpen={isModel} onClose={() => setIsModel(false)}>
       <Actionsheet.Content height={Dimensions.get("screen").height * 0.68}>
         <View style={{ height: "100%", position: "relative" }}>
           <View
@@ -85,41 +93,69 @@ const ModelComponents = (props) => {
               width: Dimensions.get("screen").width,
             }}
           >
-            <ScrollView>
-              {
-                data.map((dt, index) => (
-                  <View key={index}>
-                    <CommentComponents
-                      content={dt?.mark_content}
-                      like={[1, 2]}
-                      reply={[
-                        {
-                          content:
-                            " tells a component to fill all available space, shared evenly amongst other components with the same parent. The larger the flex given, the higher the ratio of space a component will take compared to its siblings.",
-                          like: [1, 2],
-                          reply: [
-                            {
-                              content:
-                                "y expand to fill available space if its parent has dimensions greater than 0. If a parent does not have either a fixed width and height or flex, the parent will have dimensions of 0 and the flex children wil",
-                              like: [1, 2],
-                              reply: [],
-                            },
-                            {
-                              content:
-                                "LLL n only expand to fill available space if its parent has dimensions greater than 0. If a parent does not hav",
-                              like: [1, 2],
-                              reply: [],
-                            },
-                          ],
-                        },
-                        { content: "LLL jlasjdfl", like: [1, 2], reply: [] },
-                      ]}
-                    />
+            {loading ? <View>
+              <Center w="100%">
+                <VStack w="100%" maxW="500" borderWidth="1" space={8} overflow="hidden" rounded="md" _dark={{
+                  borderColor: "white"
+                }} _light={{
+                  borderColor: "white",
 
-                  </View>
-                ))
-              }
-            </ScrollView>
+                }} padding={4} style={{ backgroundColor: 'white' }}>
+                  <Skeleton.Text px="4" />
+                  <Skeleton h="40" />
+                </VStack>
+              </Center>
+              <Center w="100%">
+                <VStack w="100%" maxW="500" borderWidth="1" space={8} overflow="hidden" rounded="md" _dark={{
+                  borderColor: "white"
+                }} _light={{
+                  borderColor: "white",
+
+                }} padding={4} style={{ backgroundColor: 'white' }}>
+                  <Skeleton.Text px="4" />
+                  <Skeleton h="40" />
+                </VStack>
+              </Center>
+
+            </View> : (
+              <ScrollView>
+                {
+                  data.map((dt, index) => (
+                    <View key={index}>
+                      <CommentComponents
+                        content={dt?.mark_content}
+                        like={[1, 2]}
+                        poster={dt?.poster}
+                        created={dt?.created}
+                        reply={[
+                          {
+                            content:
+                              " tells a component to fill all available space, shared evenly amongst other components with the same parent. The larger the flex given, the higher the ratio of space a component will take compared to its siblings.",
+                            like: [1, 2],
+                            reply: [
+                              {
+                                content:
+                                  "y expand to fill available space if its parent has dimensions greater than 0. If a parent does not have either a fixed width and height or flex, the parent will have dimensions of 0 and the flex children wil",
+                                like: [1, 2],
+                                reply: [],
+                              },
+                              {
+                                content:
+                                  "LLL n only expand to fill available space if its parent has dimensions greater than 0. If a parent does not hav",
+                                like: [1, 2],
+                                reply: [],
+                              },
+                            ],
+                          },
+                          { content: "LLL jlasjdfl", like: [1, 2], reply: [] },
+                        ]}
+                      />
+
+                    </View>
+                  ))
+                }
+              </ScrollView>
+            )}
           </View>
           <Animated.View
             style={{

@@ -206,7 +206,7 @@ export default function Auth({ navigation }) {
               }}
               alt="facebook"
             />
-            <Image
+            {/* <Image
               width={50}
               height={50}
               margin={2}
@@ -215,7 +215,7 @@ export default function Auth({ navigation }) {
                 uri: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2048px-Google_%22G%22_Logo.svg.png",
               }}
               alt="google"
-            />
+            /> */}
           </View>
         </View>
         <View style={{ alignItems: "center", marginTop: 20 }}>

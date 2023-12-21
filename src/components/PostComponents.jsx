@@ -16,6 +16,7 @@ import useStore from "../store";
 export default function PostComponents(props) {
   const setidComment = useStore(state => state.setIdComment)
   const setIsModel = useStore(state => state.setIsModel)
+ 
 
   return (
     <View

@@ -11,7 +11,7 @@ const SliderImageComponents = (props) => {
   return (
     <View style={styles.container}>
       <SimpleCarousel ref={carouselRef} setIndex={setIndex}>
-        {props.imgs.map((img,idx) => (
+        {props.imgs.length > 0 && props.imgs.map((img, idx) => (
           <View style={styles.page} key={idx}>
             <Image
               source={{
@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     marginTop: 8
   },
   page: {
-    width: Dimensions.get('screen').width-2*Padding,
+    width: Dimensions.get('screen').width - 2 * Padding,
     height: "100%",
     justifyContent: "center",
     alignItems: "center",

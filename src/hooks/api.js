@@ -90,8 +90,9 @@ export async function generateRequestHeader(type) {
   try {
     const tk = await GetStorage();
     return {
+      timeout: 5000,
       headers: {
-        "Content-Type": type === "json" ? "application/json" : "multipart/form-data",
+        "Content-Type": type === "json" ? "application/json" : "multipart/form-data; charset=utf-8;",
         "Authorization": `Bearer ${tk?.token}`,
       },
     };

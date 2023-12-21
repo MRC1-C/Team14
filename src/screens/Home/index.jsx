@@ -9,8 +9,7 @@ import { Purplerose3 } from '../../constants'
 export default function Home({ navigation, id }) {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
-  const isModel = useStore(state => state.isModel)
-  const setIsModel = useStore(state => state.setIsModel)
+
   const user = useStore(state => state.user)
 
   const scrollViewRef = useRef();
@@ -24,12 +23,12 @@ export default function Home({ navigation, id }) {
     }
   };
   const fetchData = () => {
-    if(user){
+    if (user) {
       postRequestJson('/get_list_posts', {
         "user_id": id ? id : null,
         "last_id": data.length ? data[data.length - 1]?.id : null,
         "index": "0",
-        "count": "10"
+        "count": "10" 
       })
         .then(dt => {
           setLoading(false)
@@ -40,7 +39,7 @@ export default function Home({ navigation, id }) {
     }
   }
   useEffect(() => {
-    if(user){
+    if (user) {
       fetchData()
     }
   }, [user])
@@ -49,6 +48,9 @@ export default function Home({ navigation, id }) {
     <ScrollView ref={scrollViewRef}
       onScroll={handleScroll}
       scrollEventThrottle={400}>
+      <ModelComponents/>
+
+
       {
         data?.length > 0 && data.map(dt => (
           <PostComponents
@@ -94,7 +96,6 @@ export default function Home({ navigation, id }) {
 
         </View>
       )}
-      <ModelComponents isOpen={isModel} onClose={() => setIsModel(false)} />
     </ScrollView>
   )
 }

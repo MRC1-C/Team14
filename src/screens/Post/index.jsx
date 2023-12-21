@@ -55,7 +55,7 @@ const Post = () => {
 
     // console.log(text)
     postRequest('/add_post', formData)
-      .then(data => navigation.navigate('Account'))
+      .then(data => navigation.push('Account'))
       .catch(err => console.log(JSON.stringify(err)))
 
   };

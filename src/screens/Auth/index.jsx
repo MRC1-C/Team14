@@ -12,10 +12,11 @@ import {
 } from "native-base";
 import { Padding, Purplerose1 } from "../../constants";
 import { MaterialIcons } from "@expo/vector-icons";
-import { SetStorage, postRequest, postRequestJson } from "../../hooks/api";
+import { GetStorage, SetStorage, postRequest, postRequestJson } from "../../hooks/api";
+import useStore from "../../store";
 
 export default function Auth({ navigation }) {
-  const [isNumber, setIsNumber] = useState(true);
+  const [isNumber, setIsNumber] = useState(false);
   const [accout, setaccout] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -23,6 +24,8 @@ export default function Auth({ navigation }) {
   const [show, setShow] = useState(false);
   const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState("");
+  const setUser = useStore(state => state.setUser)
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
   const type = {
@@ -39,8 +42,6 @@ export default function Auth({ navigation }) {
       bottomTitle: "Dang nhap bang SDT",
     },
   };
-
-  const handleSubmit = () => {};
 
   return (
     <ScrollView>
@@ -154,21 +155,22 @@ export default function Auth({ navigation }) {
               postRequestJson("/signup", {
                 email: accout,
                 password: password,
-                uuid: accout.toString(),
+                uuid: 'string',
               }).then((data) => console.log(data));
             } else {
-              console.log({
-                email: accout,
-                password: password.toString(),
-                uuid: accout.toString(),
-              });
               postRequestJson("/login", {
                 email: accout,
                 password: password,
-                uuid: accout.toString(),
-              }).then((data) => {
-                navigation.navigate('Home')
-                SetStorage(data.data.token);
+                uuid: 'string',
+              }).then(async (data) => {
+                await SetStorage(data?.data);
+                let token = await GetStorage();
+                console.log('first', token);
+                setUser(token)
+                setTimeout(() => {
+                  navigation.navigate('Home')
+                }, 100)
+
               });
             }
           }}

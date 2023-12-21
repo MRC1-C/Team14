@@ -8,12 +8,17 @@ import Recharge from '../screens/Recharge';
 import Post from '../screens/Post';
 import Friends from '../screens/Friends';
 import Notification from '../screens/Notification';
-import BTVN from '../screens/BTVN';
 import Setting from '../screens/Setting';
+import Video from '../screens/Video';
 export const tabs = [
   {
     name: "Home",
     component: Home,
+    icon: HomeImage,
+  },
+  {
+    name: "Video",
+    component: Video,
     icon: HomeImage,
   },
   {
@@ -30,12 +35,7 @@ export const tabs = [
     name: "Account",
     component: Account,
     icon: AccountImage,
-  },
-  {
-    name: "BTVN",
-    component: BTVN,
-    icon: AccountImage,
-  },
+  }
 ];
 
 export const screens = [

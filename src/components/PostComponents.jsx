@@ -11,12 +11,12 @@ import SliderImageComponents from "./SliderImageComponents";
 import { Padding } from "../constants";
 import ModelComponents from "./ModelComponents";
 import { useState } from "react";
+import useStore from "../store";
 
 export default function PostComponents(props) {
-  const [isOpen, setIsOpen] = useState(false)
-  const onClose = ()=>{
-    setIsOpen(false)
-  }
+  const setidComment = useStore(state => state.setIdComment)
+  const setIsModel = useStore(state => state.setIsModel)
+
   return (
     <View
       style={{ backgroundColor: "white", marginBottom: 10, paddingBottom: 10 }}
@@ -47,7 +47,7 @@ export default function PostComponents(props) {
             alt="fallback text"
             borderRadius={100}
             source={{
-              uri: "https://pbs.twimg.com/media/E8-zubHVcAA5Z1V.jpg:large",
+              uri: props.author?.avatar,
             }}
           />
           <View style={{ marginLeft: 14 }}>
@@ -58,49 +58,39 @@ export default function PostComponents(props) {
                 fontFamily: "Quicksand_700Bold",
               }}
             >
-              artlynnnn
+              {props.author?.name}
             </Text>
             <Text
-                  style={{
-                    color: "#444444",
-                    fontFamily: "Quicksand_700Bold",
-                    fontSize: 12
-                  }}
-                >
-                  Đăng 15p
-                </Text>
+              style={{
+                color: "#444444",
+                fontFamily: "Quicksand_700Bold",
+                fontSize: 12
+              }}
+            >
+              {props?.created}
+            </Text>
           </View>
         </View>
         {/*    */}
       </View>
-        <Text
-          style={{
-            fontSize: 16,
-            fontFamily: "Quicksand_500Medium",
-            paddingLeft: Padding,
-            paddingRight: Padding,
-            paddingBottom: Padding,
-          }}
-        >
-          {props.content}
-        </Text>
-      <View onTouchEnd={() => props.navigation.navigate("SocialDetail")}>
-        <SliderImageComponents
-          imgs={[
-            {
-              uri: "https://icdn.dantri.com.vn/thumb_w/770/2022/02/28/rose-2-1646032942820.png",
-            },
-            {
-              uri: "https://icdn.dantri.com.vn/thumb_w/770/2022/02/28/rose-2-1646032942820.png",
-            },
-            {
-              uri: "https://icdn.dantri.com.vn/thumb_w/770/2022/02/28/rose-2-1646032942820.png",
-            },
-            {
-              uri: "https://icdn.dantri.com.vn/thumb_w/770/2022/02/28/rose-2-1646032942820.png",
-            },
-          ]}
-        />
+      <Text
+        style={{
+          fontSize: 16,
+          fontFamily: "Quicksand_500Medium",
+          paddingLeft: Padding,
+          paddingRight: Padding,
+          paddingBottom: Padding,
+        }}
+      >
+        {props.content}
+      </Text>
+      <View>
+        {
+          props?.image && <SliderImageComponents
+            imgs={props?.image?.map(image => ({ uri: image.url }))}
+          />
+
+        }
       </View>
       <View>
         <View
@@ -130,11 +120,15 @@ export default function PostComponents(props) {
                   marginLeft: 11,
                 }}
               >
-                1,5k
+                {props?.feel}
               </Text>
             </View>
           </Button>
-          <Button onPress={()=>setIsOpen(true)} variant="ghost">
+          <Button onPress={() => {
+            setIsModel(true)
+            setidComment(props.id)
+          }
+          } variant="ghost">
             <View
               style={{
                 display: "flex",
@@ -150,7 +144,7 @@ export default function PostComponents(props) {
                   marginLeft: 11,
                 }}
               >
-                1,5k
+                {props.comment_mark}
               </Text>
             </View>
           </Button>
@@ -175,9 +169,8 @@ export default function PostComponents(props) {
             </View>
           </Button>
         </View>
-        
+
       </View>
-     <ModelComponents isOpen={isOpen} onClose={onClose}/>
     </View>
   );
 }

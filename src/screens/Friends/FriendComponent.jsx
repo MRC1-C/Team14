@@ -2,14 +2,14 @@ import { Avatar, Button, Text, View } from 'native-base'
 import React from 'react'
 import { Purplerose1 } from '../../constants'
 
-const FriendComponent = () => {
+const FriendComponent = (props) => {
     return (
         <View style={{ display: 'flex', flexDirection: 'row', padding: 8, alignItems: 'center', marginVertical: 4, backgroundColor: 'white', borderRadius: 12 }}>
             <View style={{ width: '30%' }}>
                 <Avatar
                     bg="amber.500"
                     source={{
-                        uri: "https://cdn.tuoitre.vn/thumb_w/640/471584752817336320/2023/2/13/tieu-su-ca-si-rose-blackpink-12-167628252304049682913.jpg",
+                        uri: props.avatar,
                     }}
                     size={'xl'}
                 >
@@ -24,7 +24,7 @@ const FriendComponent = () => {
                         color: 'black',
                     }}
                 >
-                    Rose Nguyễn
+                    {props?.username}
                 </Text>
                 <Text
                     style={{
@@ -33,7 +33,7 @@ const FriendComponent = () => {
                         color: Purplerose1,
                     }}
                 >
-                    thanh vien blackpink
+                    Có {props.same_friends} bạn chung
                 </Text>
                 <View style={{ display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
                     <Button

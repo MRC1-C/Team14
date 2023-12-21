@@ -11,9 +11,10 @@ import {
 } from "@expo-google-fonts/quicksand";
 import { useEffect } from "react";
 import SvgUri from "react-native-svg-uri";
-import { db } from "./firebaseConfig";
-import { onSnapshot,collection,setLogLevel } from 'firebase/firestore';
 import useStore from "./src/store";
+import { GetStorage } from "./src/hooks/api";
+import { useNavigation } from '@react-navigation/native';
+
 
 
 // setLogLevel('debug');
@@ -23,26 +24,23 @@ const Stack = createNativeStackNavigator();
 
 const TabMain = () => {
   const user = useStore(state => state.user)
+  const setUser = useStore(state => state.setUser)
+  const navigation = useNavigation();
+
 
   useEffect(() => {
-    const sessionRef = collection(db, 'sessions');
-      const unsubscribe = onSnapshot(sessionRef, (snapshot) => {
-      snapshot.docChanges().forEach((change) => {
-        if (change.doc.id === 'check') {
-          console.log(change.doc.data()?.value)
-          if(user && change.doc.data()?.value != 'no'){
-            alert('Có người đang đăng nhập từ máy khác.');
-          }
+    GetStorage()
+      .then(token => {
+        if (!token) {
+          navigation.navigate("Auth")
         }
-      });
-    });
-    return () => {
-      unsubscribe();
-    };
-  
-  }, [user]);
-  
-  
+        else {
+          setUser(token)
+        }
+      })
+  }, [setUser]);
+
+
   return (
     <Tab.Navigator
       screenOptions={{
@@ -78,7 +76,7 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
-  
+
 
   return (
     <NativeBaseProvider>

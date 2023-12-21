@@ -5,8 +5,6 @@ import React, { useState,useEffect } from "react";
 import { Text, View } from "react-native";
 import { Padding, Purplerose1 } from "../../constants";
 import { SetStorage } from "../../hooks/api";
-import {  doc, getDoc, setDoc,serverTimestamp } from 'firebase/firestore';
-import { db } from "../../../firebaseConfig";
 import uuid from 'react-native-uuid';
 import useStore from "../../store";
 
@@ -22,29 +20,6 @@ export default function AuthPassword({ route }) {
 
   const handleLogin =  async() => {
     // await SetStorage(accout);
-    const sessionRef = doc(db, 'sessions', 'logged_in');
-    getDoc(sessionRef)
-    .then((docSnapshot) => {
-      const loggedIn = docSnapshot.data()?.value;
-      
-      if (loggedIn != "no") {
-        alert('Đang có người đăng nhập');
-        const sessionRefcheck = doc(db, 'sessions', 'check');
-        setDoc(sessionRefcheck, { value: false });
-      }
-      else{
-        const _id = "1"+ uuid.v4().toString()
-        setUser(accout)
-        navigation.navigate('Account', {"user": accout, "id": _id.toString()})
-        setDoc(sessionRef, { value: _id.toString(), timestamp: serverTimestamp()});
-        
-        const sessionRefcheck = doc(db, 'sessions', 'check');
-        setDoc(sessionRefcheck, { value: 'no'});
-      }
-    })
-    .catch((error) => {
-      console.error('Lỗi khi lấy dữ liệu:', error);
-    });
   };
 
 

@@ -17,6 +17,8 @@ import {
   TextInput,
 } from "react-native";
 import { Padding, Purplerose1 } from "../constants";
+import { postRequestJson } from "../hooks/api";
+import useStore from "../store";
 
 
 const ModelComponents = (props) => {
@@ -24,10 +26,12 @@ const ModelComponents = (props) => {
   const myRef = useRef(null);
   const fadeAnim = useRef(new Animated.Value(10)).current;
   const subscriptions = useRef([]);
+  const [data, setData] = useState([])
+  const idComment = useStore(state => state.idComment)
 
   useEffect(() => {
     function onKeyboardChange(e) {
-      
+
     }
 
     if (Platform.OS === "ios") {
@@ -58,8 +62,21 @@ const ModelComponents = (props) => {
       });
     };
   }, [Animated, subscriptions]);
+
+  useEffect(() => {
+    postRequestJson('/get_mark_comment', {
+      "id": idComment,
+      "index": "0",
+      "count": "100"
+    })
+      .then(dt => {
+        console.log(dt.data.length)
+        setData(dt.data)
+      }
+      )
+  }, [idComment])
   return (
-    <Actionsheet isOpen={props.isOpen} onClose={()=>props.onClose()}>
+    <Actionsheet isOpen={props.isOpen} onClose={() => props.onClose()}>
       <Actionsheet.Content height={Dimensions.get("screen").height * 0.68}>
         <View style={{ height: "100%", position: "relative" }}>
           <View
@@ -69,32 +86,39 @@ const ModelComponents = (props) => {
             }}
           >
             <ScrollView>
-                 <CommentComponents
-              content="If you want to fill a certain portion of the screen, but you don't want to use the flex layout, you can use percentage values in the component's style. Similar to flex dimensions, percentage dimensions require parent with a defined size."
-              like={[1, 2]}
-              reply={[
-                {
-                  content:
-                    " tells a component to fill all available space, shared evenly amongst other components with the same parent. The larger the flex given, the higher the ratio of space a component will take compared to its siblings.",
-                  like: [1, 2],
-                  reply: [
-                    {
-                      content:
-                        "y expand to fill available space if its parent has dimensions greater than 0. If a parent does not have either a fixed width and height or flex, the parent will have dimensions of 0 and the flex children wil",
-                      like: [1, 2],
-                      reply: [],
-                    },
-                    {
-                      content:
-                        "LLL n only expand to fill available space if its parent has dimensions greater than 0. If a parent does not hav",
-                      like: [1, 2],
-                      reply: [],
-                    },
-                  ],
-                },
-                { content: "LLL jlasjdfl", like: [1, 2], reply: [] },
-              ]}
-            />
+              {
+                data.map((dt, index) => (
+                  <View key={index}>
+                    <CommentComponents
+                      content={dt?.mark_content}
+                      like={[1, 2]}
+                      reply={[
+                        {
+                          content:
+                            " tells a component to fill all available space, shared evenly amongst other components with the same parent. The larger the flex given, the higher the ratio of space a component will take compared to its siblings.",
+                          like: [1, 2],
+                          reply: [
+                            {
+                              content:
+                                "y expand to fill available space if its parent has dimensions greater than 0. If a parent does not have either a fixed width and height or flex, the parent will have dimensions of 0 and the flex children wil",
+                              like: [1, 2],
+                              reply: [],
+                            },
+                            {
+                              content:
+                                "LLL n only expand to fill available space if its parent has dimensions greater than 0. If a parent does not hav",
+                              like: [1, 2],
+                              reply: [],
+                            },
+                          ],
+                        },
+                        { content: "LLL jlasjdfl", like: [1, 2], reply: [] },
+                      ]}
+                    />
+
+                  </View>
+                ))
+              }
             </ScrollView>
           </View>
           <Animated.View

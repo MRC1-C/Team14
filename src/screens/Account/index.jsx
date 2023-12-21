@@ -1,17 +1,16 @@
 import { Text, Button, Image } from "native-base";
-import {  View, ScrollView } from "react-native";
+import { View, ScrollView } from "react-native";
 import {
   Purplerose1,
   Purplerose2,
   Purplerose3,
 } from "../../constants";
 import AccountComponents from "./AccountComponents";
-import PostComponents from "../../components/PostComponents";
-import { useRoute } from '@react-navigation/native';
+import useStore from "../../store";
+import Home from "../Home";
 
 export default function Account({ navigation }) {
-  const route = useRoute();
-  console.log(route.params?.user)
+  const user = useStore(state => state.user)
   return (
     <ScrollView>
       <View
@@ -22,7 +21,7 @@ export default function Account({ navigation }) {
           borderRadius: 10,
         }}
       >
-        <AccountComponents user={route.params?.user} id={route.params?.id}/>
+        <AccountComponents user={user} />
         <View
           style={{
             display: "flex",
@@ -31,8 +30,8 @@ export default function Account({ navigation }) {
         >
           <View
             style={{
-                alignItems: "center",
-                width: "33%",
+              alignItems: "center",
+              width: "33%",
               borderRightWidth: 1,
               borderColor: "lightgray",
             }}
@@ -45,53 +44,41 @@ export default function Account({ navigation }) {
             <Text
               style={{ fontFamily: "Quicksand_500Medium", color: Purplerose3 }}
             >
-              $234
+              {user?.coins}
             </Text>
           </View>
           <View
             style={{
-                alignItems: "center",
-                width: "33%",
+              alignItems: "center",
+              width: "33%",
               borderRightWidth: 1,
               borderColor: "lightgray",
             }}
           >
             <View>
-              <Button backgroundColor={Purplerose1} onPress={()=>navigation.navigate('Post')}>Đăng bài</Button>
+              <Button backgroundColor={Purplerose1} onPress={() => navigation.navigate('Post')}>Đăng bài</Button>
             </View>
           </View>
           <View
             style={{
-                alignItems: "center",
-                width: "33%",
-            //   borderRightWidth: 1,
+              alignItems: "center",
+              width: "33%",
+              //   borderRightWidth: 1,
               borderColor: "lightgray",
             }}
           >
             <View>
-              <Button backgroundColor={Purplerose1}  onPress={()=>navigation.navigate('Recharge')}>Nạp tiền</Button>
+              <Button backgroundColor={Purplerose1} onPress={() => navigation.navigate('Recharge')}>Nạp tiền</Button>
             </View>
           </View>
         </View>
       </View>
       <Text style={{ fontFamily: "Quicksand_700Bold", fontSize: 16, padding: 10, color: Purplerose3 }}>
-            Bài viết của tôi
-          </Text>
+        Bài viết của tôi
+      </Text>
       <ScrollView>
-            
-      <PostComponents
-        navigation={navigation}
-        content="Thời trang từ tháng 1 năm 2017 với vẻ ngoài khỏe khoắn có Fuji, Công
-          dân của Nhân loại, trang phục thường ngày, Packandgo, áo khoác dạ và
-          gearbest"
-      />
-      <PostComponents
-        navigation={navigation}
-        content="Thời trang từ tháng 1 năm 2017 với vẻ ngoài khỏe khoắn có Fuji, Công
-          dân của Nhân loại, trang phục thường ngày, Packandgo, áo khoác dạ và
-          gearbest"
-      />
-    </ScrollView>
+        <Home id={user?.id} />
+      </ScrollView>
     </ScrollView>
   );
 }

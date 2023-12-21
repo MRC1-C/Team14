@@ -11,30 +11,12 @@ import {
   RemoveStorage,
   SetStorage,
 } from "../../hooks/api";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { db } from "../../../firebaseConfig";
-import {
-  doc,
-  setDoc,
-  getDoc,
-  serverTimestamp,
-  onSnapshot,
-  collection,
-} from "firebase/firestore";
-import useStore from "../../store";
 import imageSetting from "../../image/setting.png";
+import useStore from "../../store";
 
 const AccountComponents = (props) => {
   const navigation = useNavigation();
-  console.log("first", props.user);
-  // const [User, setUser] = useState(null)
-  const setUser = useStore((state) => state.setUser);
-  useEffect(() => {
-    // AsyncStorage.getItem('accessToken')
-    // .then(value => setUser(value))
-    setUser(props.user);
-  }, []);
-
+  const setUser = useStore(state => state.setUser)
   return (
     <View
       style={{
@@ -65,16 +47,7 @@ const AccountComponents = (props) => {
         {props.user != null ? (
           <View style={{ marginLeft: 10 }}>
             <Text style={{ fontSize: 20, fontFamily: "Quicksand_700Bold" }}>
-              {props.user}
-            </Text>
-            <Text
-              style={{
-                fontSize: 15,
-                fontFamily: "Quicksand_500Medium",
-                color: Purplerose1,
-              }}
-            >
-              thanh vien
+              {props.user.username}
             </Text>
           </View>
         ) : (
@@ -109,14 +82,9 @@ const AccountComponents = (props) => {
         <Button
           variant={"ghost"}
           onPress={async () => {
-            setUser(null);
             navigation.navigate("Auth");
             await RemoveStorage();
-            const sessionRef = doc(db, "sessions", "logged_in");
-            await setDoc(sessionRef, {
-              value: "no",
-              timestamp: serverTimestamp(),
-            });
+            setUser(null)
           }}
         >
           <AntDesign name="logout" size={24} color={Purplerose2} />

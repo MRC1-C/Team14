@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image, TextInput, ScrollView, Dimensions } from "react-native";
 import { Purplerose3, Purplerose2, Purplerose1 } from "../../constants";
 import * as ImagePicker from 'expo-image-picker';
-import { Input } from "native-base";
+import { Button, Input, useToast } from "native-base";
 import { postRequest } from "../../hooks/api";
 import { useNavigation } from '@react-navigation/native';
 
@@ -10,7 +10,9 @@ import { useNavigation } from '@react-navigation/native';
 const Post = () => {
   const [text, setText] = useState("");
   const [images, setImages] = useState([]);
+  const [loading, setLoading] = useState(false)
   const navigation = useNavigation();
+  const toast = useToast()
 
   const pickImage = async () => {
     if (images.length < 4) {
@@ -35,6 +37,7 @@ const Post = () => {
   };
 
   const submitPost = () => {
+    setLoading(true)
     setImages([])
     const formData = new FormData();
 
@@ -50,12 +53,17 @@ const Post = () => {
     formData.append('described', text);
     formData.append('status', 'Hyped');
     formData.append('auto_accept', '1');
-    formData.append('video', null);
 
 
-    // console.log(text)
     postRequest('/add_post', formData)
-      .then(data => navigation.push('Account'))
+      .then(data => {
+        setLoading(false)
+        toast.show({
+          title: "Tạo bài thành công", placement: 'top'
+        })
+        navigation.navigate('Account',{ refresh: Math.random() })
+      }
+      )
       .catch(err => console.log(JSON.stringify(err)))
 
   };
@@ -97,7 +105,7 @@ const Post = () => {
       <View
         style={{ flexDirection: "row", justifyContent: "center", padding: 16 }}
       >
-        <TouchableOpacity
+        <Button
           style={{
             backgroundColor: Purplerose3,
             borderRadius: 8,
@@ -106,11 +114,12 @@ const Post = () => {
             width: 300,
           }}
           onPress={submitPost}
+          isLoading={loading}
         >
           <Text style={{ color: "#fff", fontSize: 16, fontWeight: "bold" }}>
             Đăng bài
           </Text>
-        </TouchableOpacity>
+        </Button>
       </View>
     </View>
   );

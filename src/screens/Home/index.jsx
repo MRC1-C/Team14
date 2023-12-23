@@ -1,15 +1,34 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { ScrollView, Text } from 'react-native'
+import { RefreshControl, ScrollView } from 'react-native'
 import PostComponents from '../../components/PostComponents'
-import { Center, Skeleton, VStack, View } from 'native-base'
+import { Center, Skeleton, VStack, View, Text } from 'native-base'
 import { GetStorage, postRequestJson } from '../../hooks/api'
 import ModelComponents from '../../components/ModelComponents'
 import useStore from '../../store'
 import { Purplerose3 } from '../../constants'
-export default function Home({ navigation, id }) {
+export default function Home({ navigation, id, route }) {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
 
+  useEffect(() => {
+    setLoading(true)
+    if (route?.params?.refresh) {
+      if (user) {
+        postRequestJson('/get_list_posts', {
+          "index": "0",
+          "count": "10",
+          "user_id": id ? id : null,
+
+        })
+          .then(dt => {
+            setLoading(false)
+            setData([...dt?.data?.post])
+          })
+          .catch(err => console.log(err))
+
+      }
+    }
+  }, [route?.params?.refresh]);
   const user = useStore(state => state.user)
 
   const scrollViewRef = useRef();
@@ -28,7 +47,7 @@ export default function Home({ navigation, id }) {
         "user_id": id ? id : null,
         "last_id": data.length ? data[data.length - 1]?.id : null,
         "index": "0",
-        "count": "10" 
+        "count": "10"
       })
         .then(dt => {
           setLoading(false)
@@ -43,12 +62,34 @@ export default function Home({ navigation, id }) {
       fetchData()
     }
   }, [user])
+  const onRefresh = async () => {
+    setLoading(true);
+    setData([])
+    if (user) {
+      postRequestJson('/get_list_posts', {
+        "index": "0",
+        "count": "10"
+      })
+        .then(dt => {
+          setLoading(false)
+          setData([...dt?.data?.post])
+        })
+        .catch(err => console.log(err))
 
+    }
+  };
   return (
     <ScrollView ref={scrollViewRef}
       onScroll={handleScroll}
-      scrollEventThrottle={400}>
-      <ModelComponents/>
+      scrollEventThrottle={400}
+      refreshControl={<RefreshControl
+        refreshing={loading}
+        onRefresh={onRefresh}
+      ></RefreshControl>}
+    >
+
+
+      <ModelComponents />
 
 
       {

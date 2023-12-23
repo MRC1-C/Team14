@@ -2,6 +2,7 @@ import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 const baseURL = 'https://it4788.catan.io.vn'
 
+
 export async function postRequest(url, body) {
   try {
     let response = await axios.post(
@@ -98,7 +99,7 @@ export async function generateRequestHeader(type) {
     };
   } catch (error) {
     // Handle error appropriately
-    console.error("Error while generating request header:", error);
+    console.error("Error while generating request header:", JSON.stringify(error));
     throw error;
   }
 };

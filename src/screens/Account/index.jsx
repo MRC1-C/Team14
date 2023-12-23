@@ -5,14 +5,19 @@ import {
   Purplerose2,
   Purplerose3,
 } from "../../constants";
+import { useEffect } from 'react'
 import AccountComponents from "./AccountComponents";
 import useStore from "../../store";
 import Home from "../Home";
+import { useFocus } from "../Reload";
+import { useNavigation } from "@react-navigation/native";
 
-export default function Account({ navigation }) {
+export default function Account({ navigation, route }) {
   const user = useStore(state => state.user)
+  useEffect(()=>{ 
+  },[route])
   return (
-    <ScrollView>
+    <View>
       <View
         style={{
           backgroundColor: "white",
@@ -76,9 +81,7 @@ export default function Account({ navigation }) {
       <Text style={{ fontFamily: "Quicksand_700Bold", fontSize: 16, padding: 10, color: Purplerose3 }}>
         Bài viết của tôi
       </Text>
-      <ScrollView>
-        <Home id={user?.id} />
-      </ScrollView>
-    </ScrollView>
+      <Home route={route} id={user?.id} />
+    </View>
   );
 }

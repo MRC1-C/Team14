@@ -194,8 +194,25 @@ const ModelComponents = (props) => {
             <Button
               color={Purplerose1}
               onPress={() => {
+                console.log({
+                  "id": ''+idComment,
+                  "content": "so good",
+                  "index": "0",
+                  "count": "10",
+                  "type": "1"
+                })
+                postRequestJson('/set_mark_comment',
+                {
+                  "id": ''+idComment,
+                  "content": text,
+                  "index": "0",
+                  "count": "10",
+                  "type": "1"
+                })
+                  .then(data => console.log(data))
+                  .catch(err => console.log(JSON.stringify(err)))
+
                 Keyboard.dismiss();
-                postComment(idPost, text);
                 setText("");
                 // addData(text)
               }}

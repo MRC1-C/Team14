@@ -12,11 +12,12 @@ import { Padding } from "../constants";
 import ModelComponents from "./ModelComponents";
 import { useState } from "react";
 import useStore from "../store";
+import { postRequestJson } from "../hooks/api";
 
 export default function PostComponents(props) {
   const setidComment = useStore(state => state.setIdComment)
   const setIsModel = useStore(state => state.setIsModel)
- 
+  const [isFeel, setIsFeel] = useState(false)
 
   return (
     <View
@@ -105,7 +106,19 @@ export default function PostComponents(props) {
             paddingTop: 5,
           }}
         >
-          <Button onPress={() => console.log("first")} variant="ghost">
+          <Button onPress={() => {
+            !isFeel ?
+              postRequestJson('/feel', {
+                "id": props.id,
+                "type": "0"
+              })
+                .then(data => setIsFeel(true))
+              :
+              postRequestJson('/delete_feel', {
+                "id": props.id,
+              })
+                .then(data => setIsFeel(false))
+          }} variant="ghost">
             <View
               style={{
                 display: "flex",
@@ -121,7 +134,7 @@ export default function PostComponents(props) {
                   marginLeft: 11,
                 }}
               >
-                {props?.feel}
+                {parseInt(props?.feel) + (isFeel ? 1 : 0)}
               </Text>
             </View>
           </Button>

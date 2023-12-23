@@ -2,18 +2,18 @@ import { Avatar, Button, Text, View } from 'native-base'
 import React from 'react'
 import { Purplerose1 } from '../../constants'
 
-const NotificationComponent = () => {
+const NotificationComponent = (props) => {
     return (
         <View style={{ display: 'flex', flexDirection: 'row', padding: 8, alignItems: 'center', marginVertical: 4, backgroundColor: 'white', borderRadius: 12 }}>
             <View style={{ width: '25%' }}>
                 <Avatar
                     bg="amber.500"
                     source={{
-                        uri: "https://p16-sign-sg.tiktokcdn.com/aweme/720x720/tos-alisg-avt-0068/40f9bce2acffc0b9dd65ec9ee11bd0d4.jpeg?x-expires=1661443200&x-signature=VduT2wxDBGhq%2B%2FkUWDBLkPco5RA%3D",
+                        uri: props.user.avatar
                     }}
                     size={'lg'}
                 >
-                    TS
+                    {props.user.username}
                 </Avatar>
             </View>
             <View style={{ width: '75%', gap: 4 }}>
@@ -24,7 +24,7 @@ const NotificationComponent = () => {
                         color: 'black',
                     }}
                 >
-                    Alice đã nhặc đến bạn trong bình luận trong nhóm AAA
+                    {props.feel ? props.user.username + " đã thích bài viết của bản": props.user.username + " đã bình luận bài viết của bản"}
                 </Text>
                 <Text
                     style={{
@@ -33,7 +33,7 @@ const NotificationComponent = () => {
                         color: Purplerose1,
                     }}
                 >
-                   15p trước
+                   {props.created}
                 </Text>
                
             </View>

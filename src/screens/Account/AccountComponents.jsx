@@ -43,15 +43,18 @@ const AccountComponents = (props) => {
           alignItems: "center",
         }}
       >
-        <Avatar
-          bg="amber.500"
-          source={{
-            uri: "https://p16-sign-sg.tiktokcdn.com/aweme/720x720/tos-alisg-avt-0068/40f9bce2acffc0b9dd65ec9ee11bd0d4.jpeg?x-expires=1661443200&x-signature=VduT2wxDBGhq%2B%2FkUWDBLkPco5RA%3D",
-          }}
-          size={70}
-        >
-          TS
-        </Avatar>
+        <TouchableOpacity onPress={()=>navigation.navigate('Profile')}>
+          <Avatar
+            bg="amber.500"
+            source={{
+              uri: props?.user?.avatar
+            }}
+            size={70}
+            
+          >
+            TS
+          </Avatar>
+        </TouchableOpacity>
         {props.user != null ? (
           <View style={{ marginLeft: 10 }}>
             <Text style={{ fontSize: 20, fontFamily: "Quicksand_700Bold" }}>
@@ -86,7 +89,7 @@ const AccountComponents = (props) => {
           </View>
         )}
       </View>
-      {props.user && (
+      {props?.user && (
         <View style={{ display: 'flex', flexDirection: 'row' }}>
           <Button variant="outline"
             onPress={() => {
@@ -136,7 +139,7 @@ const AccountComponents = (props) => {
                     token = { ...token, token: data?.data?.token }
                     await SetStorage(token)
                     setUser(token)
-                    toast.show({title: "Đổi mật khẩu thành công", placement: 'top'})
+                    toast.show({ title: "Đổi mật khẩu thành công", placement: 'top' })
                     setModalVisible(false);
                   })
                   .catch(err => console.log(err))

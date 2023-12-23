@@ -8,7 +8,6 @@ const Friends = () => {
   const [data, setData] = useState([])
   const user = useStore(state => state.user)
   const [fr, setFr] = useState([])
-  console.log(user.id)
   useEffect(() => {
     postRequestJson('/get_requested_friends', {
       "index": "0",
@@ -20,7 +19,7 @@ const Friends = () => {
     postRequestJson('/get_user_friends', {
       "index": "0",
       "count": "5",
-      "user_id": '' + user.id
+      "user_id": '' + user?.id
     })
       .then(dt => setFr(dt.data.friends))
   }, [])

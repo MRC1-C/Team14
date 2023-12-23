@@ -109,13 +109,13 @@ export default function PostComponents(props) {
           <Button onPress={() => {
             !isFeel ?
               postRequestJson('/feel', {
-                "id": props.id,
+                "id": props?.id,
                 "type": "0"
               })
                 .then(data => setIsFeel(true))
               :
               postRequestJson('/delete_feel', {
-                "id": props.id,
+                "id": props?.id,
               })
                 .then(data => setIsFeel(false))
           }} variant="ghost">

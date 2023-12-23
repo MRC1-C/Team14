@@ -10,6 +10,7 @@ import Friends from '../screens/Friends';
 import Notification from '../screens/Notification';
 import Setting from '../screens/Setting';
 import Video from '../screens/Video';
+import Profile from '../screens/Profile';
 export const tabs = [
   {
     name: "Home",
@@ -58,6 +59,10 @@ export const screens = [
   {
     name: 'Setting',
     component: Setting
+  },
+  {
+    name: 'Profile',
+    component: Profile
   }
 ];
 

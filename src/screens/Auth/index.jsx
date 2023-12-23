@@ -25,6 +25,7 @@ export default function Auth({ navigation }) {
   const [showConfirm, setShowConfirm] = useState(false);
   const [error, setError] = useState("");
   const setUser = useStore(state => state.setUser)
+  const [loading, setLoading] = useState(false)
 
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -140,23 +141,47 @@ export default function Auth({ navigation }) {
         </KeyboardAvoidingView>
         <Button
           backgroundColor={Purplerose1}
+          isLoading={loading}
           onPress={() => {
             if (!emailRegex.test(accout) && !isNumber) {
               setError("Địa chỉ email không hợp lệ");
               return;
             }
-
             // Kiểm tra xác nhận mật khẩu
             if (password !== confirmPassword && isSignUp) {
               setError("Mật khẩu không khớp");
               return;
             }
+            setLoading(true)
             if (isSignUp) {
+              console.log('first')
               postRequestJson("/signup", {
                 email: accout,
                 password: password,
                 uuid: 'string',
-              }).then((data) => console.log(data));
+              }).then((data) => {
+                postRequestJson('/check_verify_code', {
+                  "email": accout,
+                  "code_verify": data.data.verify_code
+                })
+                .then(dt => {
+                  postRequestJson("/login", {
+                    email: accout,
+                    password: password,
+                    uuid: 'string',
+                  }).then(async (data) => {
+                    await SetStorage(data?.data);
+                    let token = await GetStorage();
+                    console.log('first', token);
+                    setUser(token)
+                    setLoading(false)
+                    setTimeout(() => {
+                      navigation.navigate("Profile")
+                    }, 100)
+    
+                  });
+                })
+              });
             } else {
               postRequestJson("/login", {
                 email: accout,
@@ -167,6 +192,7 @@ export default function Auth({ navigation }) {
                 let token = await GetStorage();
                 console.log('first', token);
                 setUser(token)
+                setLoading(false)
                 setTimeout(() => {
                   navigation.navigate('Home')
                 }, 100)

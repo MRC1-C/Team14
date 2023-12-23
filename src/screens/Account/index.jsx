@@ -9,7 +9,6 @@ import { useEffect } from 'react'
 import AccountComponents from "./AccountComponents";
 import useStore from "../../store";
 import Home from "../Home";
-import { useFocus } from "../Reload";
 import { useNavigation } from "@react-navigation/native";
 
 export default function Account({ navigation, route }) {

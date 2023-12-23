@@ -67,6 +67,7 @@ export default function Home({ navigation, id, route }) {
     setData([])
     if (user) {
       postRequestJson('/get_list_posts', {
+        "user_id": id ? id : null,
         "index": "0",
         "count": "10"
       })
@@ -96,7 +97,7 @@ export default function Home({ navigation, id, route }) {
         data?.length > 0 && data.map(dt => (
           <PostComponents
             image={dt.image}
-            key={dt.id}
+            key={dt?.id}
             navigation={navigation}
             content={dt.described}
             review=""

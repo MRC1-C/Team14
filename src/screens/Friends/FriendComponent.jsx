@@ -1,6 +1,7 @@
 import { Avatar, Button, Text, View } from 'native-base'
 import React from 'react'
 import { Purplerose1 } from '../../constants'
+import { postRequestJson } from '../../hooks/api'
 
 const FriendComponent = (props) => {
     return (
@@ -35,21 +36,39 @@ const FriendComponent = (props) => {
                 >
                     Có {props.same_friends} bạn chung
                 </Text>
-                <View style={{ display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
-                    <Button
-                        style={{ flex: 1, marginRight: 10 }}
-                        backgroundColor={Purplerose1}
-                    >
-                        Kết bạn
-                    </Button>
+                {!props?.fr && <>
+                    <View style={{ display: 'flex', flexDirection: 'row', width: '100%', justifyContent: 'space-between' }}>
+                        <Button
+                            style={{ flex: 1, marginRight: 10 }}
+                            backgroundColor={Purplerose1}
+                            onPress={() => {
+                                postRequestJson('/set_accept_friend',
+                                    {
+                                        "user_id": props.id,
+                                        "is_accept": "1"
+                                    })
+                                    .then(data => console.log(data))
+                            }}
+                        >
+                            Kết bạn
+                        </Button>
 
-                    <Button
-                        style={{ flex: 1 }}
-                        backgroundColor={'gray.300'}
-                    >
-                        Xoá
-                    </Button>
-                </View>
+                        <Button
+                            style={{ flex: 1 }}
+                            backgroundColor={'gray.300'}
+                            onPress={() => {
+                                postRequestJson('/set_accept_friend',
+                                    {
+                                        "user_id": props.id,
+                                        "is_accept": "0"
+                                    })
+                                    .then(data => console.log(data))
+                            }}
+                        >
+                            Xoá
+                        </Button>
+                    </View>
+                </>}
             </View>
         </View>
     )

@@ -24,7 +24,7 @@ const SliderImageComponents = (props) => {
                     key={index}
                     style={{
                       width: "100%",
-                      height: 200,
+                      height: 350,
                       resizeMode: "cover",
                       borderRadius: 10,
                       justifyContent: "center",

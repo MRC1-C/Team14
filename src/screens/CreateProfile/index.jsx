@@ -1,21 +1,13 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  TextInput,
-  ScrollView,
-  Dimensions,
-} from "react-native";
-import { Purplerose3, Purplerose2, Purplerose1 } from "../../constants";
+import { View, Text, TouchableOpacity, Image } from "react-native";
+import { Purplerose3, Purplerose1 } from "../../constants";
 import * as ImagePicker from "expo-image-picker";
 import { Button, Input, useToast } from "native-base";
 import { postRequest } from "../../hooks/api";
 import { useNavigation } from "@react-navigation/native";
 import useStore from "../../store";
 
-const Profile = () => {
+const CreateProfile = () => {
   const [text, setText] = useState("");
   const [images, setImages] = useState("");
   const [loading, setLoading] = useState(false);
@@ -65,7 +57,7 @@ const Profile = () => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: "#fff"}}>
+    <View style={{ flex: 1, backgroundColor: "#fff" }}>
       <View>
         <Text
           style={{
@@ -104,9 +96,17 @@ const Profile = () => {
           )}
         </TouchableOpacity>
       </View>
-      <View style={{ borderBottomColor: 'lightgrey', borderBottomWidth: 1, marginTop:20, marginLeft:10, marginRight:10}} />
-      <View style={{padding: 10, }}>
-      <Text
+      <View
+        style={{
+          borderBottomColor: "lightgrey",
+          borderBottomWidth: 1,
+          marginTop: 20,
+          marginLeft: 10,
+          marginRight: 10,
+        }}
+      />
+      <View style={{ padding: 10 }}>
+        <Text
           style={{
             fontSize: 20,
             fontWeight: "bold",
@@ -116,8 +116,18 @@ const Profile = () => {
         >
           Your Name
         </Text>
-        <View style={{width:'90%', alignSelf: "center",}}>
-        <Input value={text} onChangeText={setText} style={{borderWidth:2, borderColor:Purplerose1, fontSize:15, color: Purplerose3, fontFamily:'Quicksand_700Bold'}} />
+        <View style={{ width: "90%", alignSelf: "center" }}>
+          <Input
+            value={text}
+            onChangeText={setText}
+            style={{
+              borderWidth: 2,
+              borderColor: Purplerose1,
+              fontSize: 15,
+              color: Purplerose3,
+              fontFamily: "Quicksand_700Bold",
+            }}
+          />
         </View>
       </View>
       <View
@@ -129,8 +139,8 @@ const Profile = () => {
             borderRadius: 8,
             padding: 12,
             alignItems: "center",
-            width: '60%',
-            marginTop: '20%'
+            width: "60%",
+            marginTop: "20%",
           }}
           onPress={submitPost}
           isLoading={loading}
@@ -144,4 +154,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default CreateProfile;

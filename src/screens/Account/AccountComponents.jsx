@@ -39,11 +39,11 @@ const AccountComponents = (props) => {
       <View
         style={{
           display: "flex",
-          flexDirection: "row",
+          flexDirection: "column",
           alignItems: "center",
         }}
       >
-        <TouchableOpacity onPress={()=>navigation.navigate('Profile')}>
+        <TouchableOpacity onPress={()=>navigation.navigate('EditProfile')}>
           <Avatar
             bg="amber.500"
             source={{

@@ -176,7 +176,7 @@ export default function Auth({ navigation }) {
                     setUser(token)
                     setLoading(false)
                     setTimeout(() => {
-                      navigation.navigate("Profile")
+                      navigation.navigate("CreateProfile")
                     }, 100)
     
                   });

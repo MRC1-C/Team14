@@ -126,6 +126,7 @@
 // };
 
 // export default Post;
+
 import React, { useState } from "react";
 import { View, Text, TouchableOpacity, Image, TextInput, ScrollView, Dimensions } from "react-native";
 import { Purplerose3, Purplerose2, Purplerose1 } from "../../constants";

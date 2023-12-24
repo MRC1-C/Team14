@@ -9,6 +9,7 @@ const Video = () => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState()
     const fetchData = () => {
+        setLoading(true)
         postRequestJson('/get_list_videos', {
             "last_id": data.length ? data[data.length - 1]?.id : null,
             "index": "0",
@@ -22,7 +23,6 @@ const Video = () => {
 
     }
     useEffect(() => {
-        setLoading(true)
         fetchData()
     }, [])
     const scrollViewRef = useRef();
@@ -32,7 +32,7 @@ const Video = () => {
             layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;
 
         if (isCloseToBottom) {
-            fetchData();
+            !loading && fetchData();
         }
     };
     const onRefresh = async () => {

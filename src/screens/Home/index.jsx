@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { RefreshControl, ScrollView } from 'react-native'
 import PostComponents from '../../components/PostComponents'
-import { Center, Skeleton, VStack, View, Text } from 'native-base'
+import { Center, Skeleton, VStack, View, Text, Input, Icon } from 'native-base'
 import { GetStorage, postRequestJson } from '../../hooks/api'
 import ModelComponents from '../../components/ModelComponents'
 import useStore from '../../store'
@@ -9,7 +9,9 @@ import { Purplerose3 } from '../../constants'
 export default function Home({ navigation, id, route }) {
   const [data, setData] = useState([])
   const [loading, setLoading] = useState(true)
-
+  const [search, setSearch] = useState('')
+  const user = useStore(state => state.user)
+  console.log(user)
   useEffect(() => {
     setLoading(true)
     if (route?.params?.refresh) {
@@ -29,7 +31,6 @@ export default function Home({ navigation, id, route }) {
       }
     }
   }, [route?.params?.refresh]);
-  const user = useStore(state => state.user)
 
   const scrollViewRef = useRef();
   const handleScroll = (event) => {
@@ -38,10 +39,11 @@ export default function Home({ navigation, id, route }) {
       layoutMeasurement.height + contentOffset.y >= contentSize.height - 20;
 
     if (isCloseToBottom) {
-      fetchData();
+      !loading && fetchData();
     }
   };
   const fetchData = () => {
+    setLoading(true)
     if (user) {
       postRequestJson('/get_list_posts', {
         "user_id": id ? id : null,
@@ -88,8 +90,21 @@ export default function Home({ navigation, id, route }) {
         onRefresh={onRefresh}
       ></RefreshControl>}
     >
-
-
+    <View style={{padding: 8}}>
+      <Input placeholder='Tìm kiếm' style={{ width: '80%' }} onChangeText={(e) => {
+        setLoading(true)
+        postRequestJson('/search', {
+          "user_id": id ? id : null,
+          "keyword": e,
+          "index": "0",
+          "count": "10"
+        })
+          .then(dt => {
+            setLoading(false)
+            setData([...dt?.data])
+          })
+      }} />
+    </View>
       <ModelComponents />
 
 

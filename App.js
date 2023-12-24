@@ -100,7 +100,7 @@ export default function App() {
               options={{ headerShown: true, headerTintColor: Purplerose2 }}
             />
           ))}
-          {/* {screensTransparent.map((sc) => (
+          {screensTransparent.map((sc) => (
             <Stack.Screen
               key={sc.name}
               name={sc.name}
@@ -112,7 +112,7 @@ export default function App() {
                 headerTintColor: Purplerose2,
               }}
             />
-          ))} */}
+          ))}
         </Stack.Navigator>
       </NavigationContainer>
     </NativeBaseProvider>

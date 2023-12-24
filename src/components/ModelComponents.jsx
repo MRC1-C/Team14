@@ -82,7 +82,7 @@ const ModelComponents = (props) => {
         setData(dt.data)
       }
       )
-  }, [idComment])
+  }, [idComment, isModel])
   return (
     <Actionsheet isOpen={isModel} onClose={() => setIsModel(false)}>
       <Actionsheet.Content height={Dimensions.get("screen").height * 0.68}>

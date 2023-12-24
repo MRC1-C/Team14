@@ -1,9 +1,10 @@
-import { Avatar, Button, Text, View } from 'native-base'
+import { Avatar, Button, Text, View, useToast } from 'native-base'
 import React from 'react'
 import { Purplerose1 } from '../../constants'
 import { postRequestJson } from '../../hooks/api'
 
 const FriendComponent = (props) => {
+    const toast = useToast()
     return (
         <View style={{ display: 'flex', flexDirection: 'row', padding: 8, alignItems: 'center', marginVertical: 4, backgroundColor: 'white', borderRadius: 12 }}>
             <View style={{ width: '30%' }}>
@@ -47,7 +48,9 @@ const FriendComponent = (props) => {
                                         "user_id": props.id,
                                         "is_accept": "1"
                                     })
-                                    .then(data => console.log(data))
+                                    .then(data => {
+                                        toast.show({ title: 'Kết bạn thành công', placement: 'top' })
+                                    })
                             }}
                         >
                             Kết bạn
@@ -62,7 +65,9 @@ const FriendComponent = (props) => {
                                         "user_id": props.id,
                                         "is_accept": "0"
                                     })
-                                    .then(data => console.log(data))
+                                    .then(data => {
+                                        toast.show({ title: 'Đã xoá bạn', placement: 'top' })
+                                    })
                             }}
                         >
                             Xoá

@@ -11,6 +11,8 @@ import Notification from '../screens/Notification';
 import Setting from '../screens/Setting';
 import Video from '../screens/Video';
 import Profile from '../screens/Profile';
+import ImageSeen from '../screens/Image';
+import Personal from '../screens/Personal';
 export const tabs = [
   {
     name: "Home",
@@ -63,13 +65,17 @@ export const screens = [
   {
     name: 'Profile',
     component: Profile
+  },
+  {
+    name: 'Personal',
+    component: Personal
   }
 ];
 
 
 export const screensTransparent = [
-  // {
-  //   name: 'AuthPass',
-  //   component: Auth
-  // }
+  {
+    name: 'Image',
+    component: ImageSeen
+  }
 ]

@@ -2,7 +2,7 @@ import {
   Image,
   Button,
 } from "native-base";
-import { View, Text } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import SvgUri from "react-native-svg-uri";
 import like from "../image/likeimage.svg";
 import comment from "../image/commentimage.svg";
@@ -13,11 +13,15 @@ import ModelComponents from "./ModelComponents";
 import { useState } from "react";
 import useStore from "../store";
 import { postRequestJson } from "../hooks/api";
+import { useNavigation } from "@react-navigation/native";
 
 export default function PostComponents(props) {
   const setidComment = useStore(state => state.setIdComment)
   const setIsModel = useStore(state => state.setIsModel)
   const [isFeel, setIsFeel] = useState(false)
+  const navigation = useNavigation()
+  const setImages = useStore(state => state.setImages)
+  const setFrend = useStore(state => state.setFrend)
 
   return (
     <View
@@ -42,6 +46,10 @@ export default function PostComponents(props) {
             justifyContent: "space-between",
             alignItems: "center",
             marginBottom: 5,
+          }}
+          onTouchEnd={() => {
+            setFrend(props?.author)
+            navigation.navigate('Personal')
           }}
         >
           <Image
@@ -86,7 +94,10 @@ export default function PostComponents(props) {
       >
         {props.content}
       </Text>
-      <View>
+      <View onTouchEnd={() => {
+        setImages(props?.image)
+        navigation.navigate("Image")
+      }}>
         {
           props?.image && <SliderImageComponents
             imgs={props?.image?.map(image => ({ uri: image.url }))}

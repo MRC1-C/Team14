@@ -8,8 +8,11 @@ const useStore = create(set => ({
     idComment: null,
     setIdComment: (value) =>set((state)=>({idComment: value})),
     isModel: false,
-    setIsModel: (value)=> set((state)=>({isModel: value}))
-
+    setIsModel: (value)=> set((state)=>({isModel: value})),
+    images: null,
+    setImages: (value)=>set((state)=>({images: value})),
+    frend: null,
+    setFrend: (value)=>set((state)=>({frend: value})),
 }));
 
 export default useStore;

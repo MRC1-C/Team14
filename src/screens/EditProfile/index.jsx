@@ -8,13 +8,13 @@ import { useNavigation } from "@react-navigation/native";
 import useStore from "../../store";
 
 const EditProfile = (props) => {
-  const [text, setText] = useState("");
-  const [images, setImages] = useState("");
+  const user = useStore((state) => state.user);
+  const [text, setText] = useState(user?.username);
+  const [images, setImages] = useState(user?.avatar);
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
   const toast = useToast();
   const setUser = useStore((state) => state.setUser);
-  const user = useStore((state) => state.user);
 
   const pickImage = async () => {
     if (images.length < 4) {

@@ -8,7 +8,7 @@ import like from "../image/likeimage.svg";
 import comment from "../image/commentimage.svg";
 import share from "../image/shareimage.svg";
 import SliderImageComponents from "./SliderImageComponents";
-import { Padding } from "../constants";
+import { Padding, Purplerose1 } from "../constants";
 import ModelComponents from "./ModelComponents";
 import { useState } from "react";
 import useStore from "../store";
@@ -22,6 +22,8 @@ export default function PostComponents(props) {
   const navigation = useNavigation()
   const setImages = useStore(state => state.setImages)
   const setFrend = useStore(state => state.setFrend)
+  const user = useStore((state) => state.user);
+  const setPost = useStore(state => state.setPost)
 
   return (
     <View
@@ -81,6 +83,13 @@ export default function PostComponents(props) {
             </Text>
           </View>
         </View>
+        {
+          user?.id == props?.author.id &&
+          <Button backgroundColor={Purplerose1} onPress={() => {
+            setPost(props)
+            navigation.navigate('EditPost')
+          }}>Sửa</Button>
+        }
         {/*    */}
       </View>
       <Text

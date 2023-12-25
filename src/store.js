@@ -4,15 +4,18 @@ const useStore = create(set => ({
     user: null,
     setUser: (value) => set(state => ({ user: value })),
     id: 'no',
-    setID: (value)=> set((state)=>({id: value})),
+    setID: (value) => set((state) => ({ id: value })),
     idComment: null,
-    setIdComment: (value) =>set((state)=>({idComment: value})),
+    setIdComment: (value) => set((state) => ({ idComment: value })),
     isModel: false,
-    setIsModel: (value)=> set((state)=>({isModel: value})),
+    setIsModel: (value) => set((state) => ({ isModel: value })),
     images: null,
-    setImages: (value)=>set((state)=>({images: value})),
+    setImages: (value) => set((state) => ({ images: value })),
     frend: null,
-    setFrend: (value)=>set((state)=>({frend: value})),
+    setFrend: (value) => set((state) => ({ frend: value })),
+    post: null,
+    setPost: (value) => set((state) => ({ post: value })),
+
 }));
 
 export default useStore;

@@ -14,6 +14,7 @@ import CreateProfile from '../screens/CreateProfile';
 import EditProfile from '../screens/EditProfile';
 import ImageSeen from '../screens/Image';
 import Personal from '../screens/Personal';
+import EditPost from '../screens/EditPost';
 export const tabs = [
   {
     name: "Home",
@@ -74,6 +75,10 @@ export const screens = [
   {
     name: 'Personal',
     component: Personal
+  },
+  {
+    name: 'EditPost',
+    component: EditPost
   }
 ];
 

@@ -14,6 +14,9 @@ import { useState } from "react";
 import useStore from "../store";
 import { postRequestJson } from "../hooks/api";
 import { useNavigation } from "@react-navigation/native";
+import react from '../image/like.png';
+import cmt from '../image/cmt.png';
+import s from '../image/share.png';
 
 export default function PostComponents(props) {
   const setidComment = useStore(state => state.setIdComment)
@@ -146,7 +149,7 @@ export default function PostComponents(props) {
                 marginRight: 14,
               }}
             >
-              <SvgUri width={14} fill="#444444" source={like} />
+              <Image width={7} fill="#444444" source={react} />
               <Text
                 style={{
                   color: "#444444",
@@ -170,7 +173,7 @@ export default function PostComponents(props) {
                 marginRight: 14,
               }}
             >
-              <SvgUri width={14} fill="#444444" source={comment} />
+              <Image width={5} fill="#444444" source={cmt} />
               <Text
                 style={{
                   color: "#444444",
@@ -190,15 +193,15 @@ export default function PostComponents(props) {
                 marginRight: 14,
               }}
             >
-              <SvgUri width={14} fill="#444444" source={share} />
+              <Image width={5} fill="#444444" source={s} />
               <Text
                 style={{
                   color: "#444444",
-                  fontFamily: "Quicksand_500Medium",
+                  fontFamily: "Quicksand_700Medium",
                   marginLeft: 11,
                 }}
               >
-                report
+                Share
               </Text>
             </View>
           </Button>

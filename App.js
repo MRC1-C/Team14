@@ -14,6 +14,7 @@ import SvgUri from "react-native-svg-uri";
 import useStore from "./src/store";
 import { GetStorage } from "./src/hooks/api";
 import { useNavigation } from '@react-navigation/native';
+import { AntDesign } from "@expo/vector-icons";
 
 
 
@@ -54,7 +55,12 @@ const TabMain = () => {
           component={item.component}
           options={{
             tabBarIcon: ({ focused, color }) => (
-              <SvgUri source={item.icon} fill={focused ? color : "gray"} />
+              <AntDesign
+                name={item.icon}
+                size={24}
+                color={focused ? color : "gray"}
+              />
+              // <SvgUri source={item.icon} fill={focused ? color : "gray"} />
             ),
             tabBarLabelStyle: {
               textTransform: "none",

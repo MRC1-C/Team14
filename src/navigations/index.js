@@ -19,27 +19,27 @@ export const tabs = [
   {
     name: "Home",
     component: Home,
-    icon: HomeImage,
+    icon: "home",
   },
   {
     name: "Video",
     component: Video,
-    icon: HomeImage,
+    icon: "videocamera",
   },
   {
     name: "Friends",
     component: Friends,
-    icon: AccountImage,
+    icon: "addusergroup",
   },
   {
     name: "Notification",
     component: Notification,
-    icon: AccountImage,
+    icon: "notification",
   },
   {
     name: "Account",
     component: Account,
-    icon: AccountImage,
+    icon: 'user',
   }
 ];
 
